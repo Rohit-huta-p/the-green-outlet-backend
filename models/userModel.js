@@ -43,7 +43,12 @@ UserSchema.statics.comparePassword = async (password, hashedPassword) => {
 
 
 UserSchema.statics.generateToken = (user, store) => {
-    return jwt.sign({ userId: user._id,storeId : store._id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2d"} )
+    if(store == null){
+        return jwt.sign({ userId: user._id , role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2d"} )
+    }
+    
+    
+    return jwt.sign({ userId: user._id ,storeId : store._id, role: user.role, email: user.email }, process.env.JWT_SECRET, { expiresIn: "2d"} )
 }
 
 

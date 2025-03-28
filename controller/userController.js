@@ -37,9 +37,14 @@ const login = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        const store = await ThriftStoreModel.findOne({ owner: user._id });
+        let store;
+        if(user.role === 'store') {
+            store = await ThriftStoreModel.findOne({ owner: user._id });
+        }
+
         
         const token = await UserModel.generateToken(user, store);
+        console.log({ message: "User logged in successfully", token });
         
         res.status(200).json({ message: "User logged in successfully", token });
         
